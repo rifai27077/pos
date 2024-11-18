@@ -2,14 +2,22 @@
 
 import React from "react";
 import Image from "next/image";
-import { FaSearch } from "react-icons/fa";
+import { FaBars, FaSearch } from "react-icons/fa";
 
-const Navbar = () => {
+const Navbar = ({ toggleSidebar }) => {
     return (
         <div className="h-16 bg-white shadow-md flex items-center justify-between px-4 md:px-6">
+            {/* Hamburger Button */}
+            <button
+                onClick={toggleSidebar}
+                className="flex items-center justify-center w-10 h-10 text-gray-800 bg-gray-100 rounded-full md:hidden hover:bg-gray-200 transition duration-300"
+            >
+                <FaBars className="text-xl" />
+            </button>
+
             {/* Search Bar */}
-            <div className="flex items-center w-full md:w-1/2">
-                <div className="relative w-full">
+            <div className="flex items-center w-full justify-start ml-4">
+                <div className="relative w-4/5 max-w-xs md:max-w-sm lg:max-w-md">
                     <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                         type="text"
@@ -21,19 +29,17 @@ const Navbar = () => {
 
             {/* Profile Section */}
             <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-3">
-                    <div className="text-right hidden md:block">
-                        <h3 className="text-sm font-medium text-gray-800">John Doe</h3>
-                        <p className="text-xs text-gray-500">Admin</p>
-                    </div>
-                    <Image
-                        src="/profile.png"
-                        alt="Profile"
-                        width={40}
-                        height={40}
-                        className="rounded-full cursor-pointer"
-                    />
+                <div className="hidden md:block text-right">
+                    <h3 className="text-sm font-medium text-gray-800">John Doe</h3>
+                    <p className="text-xs text-gray-500">Admin</p>
                 </div>
+                <Image
+                    src="/ai.jpg"
+                    alt="Profile"
+                    width={40}
+                    height={40}
+                    className="rounded-full cursor-pointer"
+                />
             </div>
         </div>
     );
