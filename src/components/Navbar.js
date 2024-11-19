@@ -7,7 +7,6 @@ import { FaBars, FaSearch } from "react-icons/fa";
 const Navbar = ({ toggleSidebar }) => {
     return (
         <div className="h-16 bg-white shadow-md flex items-center justify-between px-4 md:px-6">
-            {/* Hamburger Button */}
             <button
                 onClick={toggleSidebar}
                 className="flex items-center justify-center w-10 h-10 text-gray-800 bg-gray-100 rounded-full md:hidden hover:bg-gray-200 transition duration-300"
@@ -15,7 +14,6 @@ const Navbar = ({ toggleSidebar }) => {
                 <FaBars className="text-xl" />
             </button>
 
-            {/* Search Bar */}
             <div className="flex items-center w-full justify-start ml-4">
                 <div className="relative w-4/5 max-w-xs md:max-w-sm lg:max-w-md">
                     <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -27,7 +25,6 @@ const Navbar = ({ toggleSidebar }) => {
                 </div>
             </div>
 
-            {/* Profile Section */}
             <div className="flex items-center space-x-4">
                 <div className="hidden md:block text-right">
                     <h3 className="text-sm font-medium text-gray-800">John Doe</h3>
