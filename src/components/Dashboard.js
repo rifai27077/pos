@@ -1,46 +1,60 @@
-"use client"
-import React from 'react';
+
+"use client";
+
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(
+    CategoryScale, // for category axis
+    LinearScale,   // for linear axis (e.g., Y-axis for bar/line charts)
+    BarElement,    // for bar chart
+    Title,         // for chart title
+    Tooltip,       // for tooltips
+    Legend         // for legend
+);
 
 const Dashboard = () => {
-  // Dummy data for demonstration
-    const stats = {
-        totalProducts: 50,
-        totalSales: 1200,
-        totalTransactions: 35,
-        totalCustomers: 100,
+    const stats = [
+        { title: "Total Sales", value: "Rp 25.000.000", color: "bg-green-500" },
+        { title: "Transactions", value: "150", color: "bg-blue-500" },
+        { title: "Low Stock Items", value: "8", color: "bg-red-500" },
+    ];
+
+    const chartData = {
+        labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        datasets: [
+            {
+                label: "Sales (in Rp)",
+                data: [5000000, 7000000, 8000000, 6000000, 9000000],
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1,
+            },
+        ],
     };
 
     return (
-        <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold text-center mb-8">POS Dashboard</h1>
+        <div className="p-4">
+            <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Total Products */}
-            <div className="border p-6 rounded-lg shadow-lg bg-blue-100">
-            <h3 className="text-xl font-semibold text-blue-600">Total Products</h3>
-            <p className="text-3xl font-bold">{stats.totalProducts}</p>
+            {/* Stats Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                {stats.map((stat) => (
+                    <div
+                        key={stat.title}
+                        className={`p-4 rounded-lg text-white ${stat.color}`}
+                    >
+                        <h3 className="text-lg font-medium">{stat.title}</h3>
+                        <p className="text-2xl font-bold">{stat.value}</p>
+                    </div>
+                ))}
             </div>
 
-            {/* Total Sales */}
-            <div className="border p-6 rounded-lg shadow-lg bg-green-100">
-            <h3 className="text-xl font-semibold text-green-600">Total Sales ($)</h3>
-            <p className="text-3xl font-bold">${stats.totalSales}</p>
+            {/* Chart Section */}
+            <div className="bg-white shadow-md rounded-lg p-4">
+                <h2 className="text-xl font-medium mb-4">Sales Overview</h2>
+                <Bar data={chartData} />
             </div>
-
-            {/* Total Transactions */}
-            <div className="border p-6 rounded-lg shadow-lg bg-yellow-100">
-            <h3 className="text-xl font-semibold text-yellow-600">Total Transactions</h3>
-            <p className="text-3xl font-bold">{stats.totalTransactions}</p>
-            </div>
-
-            {/* Total Customers */}
-            <div className="border p-6 rounded-lg shadow-lg bg-purple-100">
-            <h3 className="text-xl font-semibold text-purple-600">Total Customers</h3>
-            <p className="text-3xl font-bold">{stats.totalCustomers}</p>
-            </div>
-        </div>
-
-        {/* Additional Chart/Graphs can be added here in the future */}
         </div>
     );
 };
