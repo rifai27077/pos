@@ -4,6 +4,11 @@ import Image from "next/image";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 import React, { useState } from "react";
+import DashboardCards from "@/components/DashboardCards";
+import StockAlerts from "@/components/StockAlerts";
+import SalesChart from "@/components/SalesChart";
+import TransactionTable from "@/components/TransactionTable";
+
 
 export default function Home() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -12,16 +17,21 @@ export default function Home() {
     const closeSidebar = () => setSidebarOpen(false);
 
     return (
-        <div className="flex">
+        <div className="flex bg-slate-300">
             <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
             <div className="flex flex-col flex-1 md:ml-64">
                 <Navbar toggleSidebar={toggleSidebar} />
 
                 <main className="p-4">
-                    <h1 className="text-2xl font-bold">Welcome to POS System</h1>
-                    <p className="mt-4 text-gray-600">
-                        This is the main content area. You can add more content here.
-                    </p>
+                    <div className="p-6 space-y-6">
+                        <h1 className="text-2xl font-bold text-gray-800 text-center">Dashboard</h1>
+                        <DashboardCards />
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <StockAlerts />
+                            <SalesChart />
+                        </div>
+                        <TransactionTable />
+                    </div>
                 </main>
             </div>
 

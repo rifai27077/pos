@@ -17,14 +17,13 @@ import {
 } from "react-icons/fa";
 
 const menuItems = [
-    { href: "/dashboard", label: "Dashboard", icon: FaTachometerAlt },
+    { href: "/", label: "Dashboard", icon: FaTachometerAlt },
     { href: "/customers", label: "Customers & Suppliers", icon: FaUserFriends },
     { href: "/products", label: "Products", icon: FaBox },
     { href: "/sales", label: "Sales", icon: FaShoppingCart },
     { href: "/purchases", label: "Purchases", icon: FaCreditCard },
     { href: "/pos", label: "Point of Sale", icon: FaCashRegister },
     { href: "/reports", label: "Reports", icon: FaChartLine },
-    { href: "/notifications", label: "Notifications", icon: FaBell },
     { href: "/settings", label: "Settings", icon: FaCog },
 ];
 
