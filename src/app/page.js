@@ -17,7 +17,7 @@ export default function Home() {
     const closeSidebar = () => setSidebarOpen(false);
 
     return (
-        <div className="flex bg-slate-300">
+        <div className="flex">
             <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
             <div className="flex flex-col flex-1 md:ml-64">
                 <Navbar toggleSidebar={toggleSidebar} />

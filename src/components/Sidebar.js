@@ -18,10 +18,8 @@ import {
 
 const menuItems = [
     { href: "/", label: "Dashboard", icon: FaTachometerAlt },
-    { href: "/customers", label: "Customers & Suppliers", icon: FaUserFriends },
     { href: "/products", label: "Products", icon: FaBox },
     { href: "/sales", label: "Sales", icon: FaShoppingCart },
-    { href: "/purchases", label: "Purchases", icon: FaCreditCard },
     { href: "/pos", label: "Point of Sale", icon: FaCashRegister },
     { href: "/reports", label: "Reports", icon: FaChartLine },
     { href: "/settings", label: "Settings", icon: FaCog },
@@ -50,7 +48,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 {menuItems.map(({ href, label, icon: Icon }) => (
                     <Link href={href} key={label} onClick={closeSidebar}>
                         <div
-                            className={`flex items-center py-3 px-4 rounded-lg transition duration-300 ${
+                            className={`flex items-center my-2 py-3 px-4 rounded-lg transition duration-300 ${
                                 pathname === href
                                     ? "bg-gray-700 text-white"
                                     : "text-gray-300 hover:bg-gray-700 hover:text-white"

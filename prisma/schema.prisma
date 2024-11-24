@@ -1,0 +1,15 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id    Int    @id @default(autoincrement()) // ID produk yang akan di-generate otomatis
+  name  String // Nama produk
+  price Int    // Harga produk
+  stock Int    // Stok produk
+}
