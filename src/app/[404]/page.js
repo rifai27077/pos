@@ -3,12 +3,12 @@ import Link from 'next/link';
 
 export default function NotFound() {
     return (
-        <div className="grid h-screen place-content-center bg-gray-900 px-4 text-white">
+        <div className="grid h-screen place-content-center px-4">
             <div className="text-center">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 1024 768"
-                    className="mx-auto h-56 w-auto text-white sm:h-64"
+                    className="mx-auto h-56 w-auto text-gray-900 sm:h-64"
                 >
                     <g fill="none" fillRule="evenodd">
                     <g fill="#facc15">
@@ -40,13 +40,13 @@ export default function NotFound() {
                     Halaman Tidak Ditemukan
                 </h1>
 
-                <p className="mt-4 text-gray-400">
+                <p className="mt-4 text-gray-600">
                     Maaf, halaman yang Anda cari tidak tersedia.
                 </p>
 
                 <div className="mt-6">
                     <Link href="/">
-                        <span className="inline-block px-6 py-3 text-sm font-medium text-gray-900 bg-yellow-400 rounded-lg hover:bg-yellow-500">
+                        <span className="inline-block px-6 py-3 text-sm font-medium text-gray-100 bg-gray-800 rounded-lg hover:bg-gray-950">
                             Kembali ke Beranda
                         </span>
                     </Link>

@@ -9,7 +9,6 @@ import StockAlerts from "@/components/StockAlerts";
 import SalesChart from "@/components/SalesChart";
 import TransactionTable from "@/components/TransactionTable";
 
-
 export default function Home() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -19,7 +18,7 @@ export default function Home() {
     return (
         <div className="flex">
             <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-            <div className="flex flex-col flex-1 md:ml-64">
+            <div className="flex flex-col flex-1 md:ml-64 mt-16"> {/* Tambahkan mt-16 untuk memberi ruang untuk navbar fixed */}
                 <Navbar toggleSidebar={toggleSidebar} />
 
                 <main className="p-4">

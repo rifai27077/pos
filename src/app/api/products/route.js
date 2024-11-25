@@ -18,6 +18,7 @@ export async function GET() {
     }
 }
 
+
 export async function POST(request) {
     try {
         const { name, price, stock } = await request.json(); // Ambil data dari body request
@@ -96,3 +97,4 @@ export async function PUT(req, { params }) {
         await prisma.$disconnect();
     }
 }
+

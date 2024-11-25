@@ -1,17 +1,22 @@
 "use client"
 
-import Image from "next/image";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 import React, { useState, useEffect } from "react";
 import ProductTable from "@/components/ProductTable";
 import Header from "@/components/Header";
+import LoadingSpin from "@/components/LoadingSpin";
+import EditProductModal from "@/components/EditProductModal";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ProductsPage() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);  // Tambahkan state isLoading
+    const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [search, setSearch] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
     const closeSidebar = () => setSidebarOpen(false);
@@ -21,17 +26,16 @@ export default function ProductsPage() {
         try {
             const response = await fetch('/api/products');
             const data = await response.json();
-            console.log('Fetched products:', data); // Log untuk debugging
             setProducts(data);
         } catch (error) {
             console.error("Error fetching products:", error);
         } finally {
             setIsLoading(false);
         }
-    };    
+    };
 
     useEffect(() => {
-        fetchData(); // Ambil data produk saat halaman dimuat
+        fetchData();
     }, []);
 
     const filteredProducts = products.filter((product) =>
@@ -39,48 +43,54 @@ export default function ProductsPage() {
     );
 
     const handleEditProduct = (id) => {
-        window.location.href = `/products/edit/${id}`;
+        const productToEdit = products.find((product) => product.id === id);
+        setSelectedProduct(productToEdit);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedProduct(null);
     };
 
     // Fungsi untuk menghapus produk
     const handleDeleteProduct = async (id) => {
-        const confirmed = window.confirm("Are you sure you want to delete this product?");
-        if (confirmed) {
-            try {
-                const response = await fetch(`/api/products/${id}`, {
-                    method: "DELETE",
-                });
+        const isConfirmed = window.confirm("Are you sure you want to delete this product?");
     
-                const responseJson = await response.json();
-    
-                if (response.ok) {
-                    alert("Product deleted successfully");
-                    fetchData(); // Reload data after deletion
-                } else {
-                    alert(`Failed to delete product: ${responseJson?.message || responseText}`);
-                }
-            } catch (error) {
-                console.error("Error deleting product:", error);
-                alert("An error occurred while deleting the product");
-            }
+        if (!isConfirmed) {
+            return;
         }
-    };
     
+        try {
+            const response = await fetch(`/api/products/${id}`, {
+                method: 'DELETE',
+            });
+    
+            if (response.ok) {
+                toast.success('Product deleted successfully');
+                fetchData();
+            } else {
+                const errorMessage = await response.text();
+                toast.error(`Failed to delete product: ${errorMessage}`);
+            }
+        } catch (error) {
+            toast.error('An error occurred while deleting the product. Please try again.');
+        }
+    };    
 
     return (
-        <div className="flex flex-col flex-1 md:ml-64">
+        <div className="flex">
             <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col flex-1 md:ml-64 mt-16">
                 <Navbar toggleSidebar={toggleSidebar} />
-
-                <main className="p-4 sm:px-6 bg-gray-100 min-h-screen">
+                <main className="p-4 sm:px-6 min-h-screen">
                     <Header
-                        search={search}  // Kirimkan search
-                        setSearch={setSearch}  // Kirimkan setSearch
+                        search={search}
+                        setSearch={setSearch}
                     />
                     {isLoading && (
-                        <div className="flex justify-center items-center">
-                            <div className="spinner-border animate-spin h-8 w-8 border-t-4 border-blue-600 rounded-full"></div>
+                        <div className="flex justify-center items-center h-full min-h-[calc(100vh-500px)]">
+                            <LoadingSpin />
                         </div>
                     )}
                     {!isLoading && (
@@ -99,6 +109,14 @@ export default function ProductsPage() {
                     onClick={closeSidebar}
                     className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
                 ></div>
+            )}
+
+            {isModalOpen && selectedProduct && (
+                <EditProductModal
+                    product={selectedProduct}
+                    onClose={handleCloseModal}
+                    onUpdate={fetchData}
+                />
             )}
         </div>
     );

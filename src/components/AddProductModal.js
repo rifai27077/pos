@@ -1,15 +1,17 @@
 "use client"
 
 import React, { useState } from "react";
+import { toast } from "react-toastify"; // Import toast untuk notifikasi
+import "react-toastify/dist/ReactToastify.css"; // Import CSS untuk Toastify
 
 const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
-    const [name, setName] = useState("");  // Nama produk
-    const [price, setPrice] = useState("");  // Harga produk
-    const [stock, setStock] = useState("");  // Stok produk
+    const [name, setName] = useState("");
+    const [price, setPrice] = useState("");
+    const [stock, setStock] = useState("");
 
     // Fungsi untuk mengirim produk baru dan menutup modal
     const handleSubmit = async (event) => {
-        event.preventDefault(); // Mencegah refresh halaman saat submit
+        event.preventDefault();
 
         const newProduct = {
             name,
@@ -18,7 +20,6 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
         };
 
         try {
-            // Kirimkan data produk baru ke API untuk ditambahkan ke server
             const response = await fetch("/api/products", {
                 method: "POST",
                 headers: {
@@ -28,26 +29,25 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             });
 
             if (response.ok) {
-                // Jika produk berhasil ditambahkan, panggil onAddProduct untuk update state produk
                 onAddProduct(newProduct);
-                alert("Product added successfully!");
-                onClose(); // Tutup modal setelah penambahan produk
+                toast.success("Product added successfully!"); // Menampilkan notifikasi success
+                onClose();
             } else {
-                alert("Failed to add product");
+                toast.error("Failed to add product"); // Menampilkan notifikasi error
             }
         } catch (error) {
             console.error("Error adding product:", error);
-            alert("An error occurred while adding the product");
+            toast.error("An error occurred while adding the product"); // Menampilkan notifikasi error
         }
     };
 
     return isOpen ? (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-20 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Add New Product</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">Tambahkan Produk Baru</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="name" className="block text-sm font-semibold text-gray-700">Product Name</label>
+                        <label htmlFor="name" className="block text-sm font-semibold text-gray-700">Nama Produk</label>
                         <input
                             id="name"
                             type="text"
@@ -58,7 +58,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="price" className="block text-sm font-semibold text-gray-700">Price</label>
+                        <label htmlFor="price" className="block text-sm font-semibold text-gray-700">Harga</label>
                         <input
                             id="price"
                             type="number"
@@ -69,7 +69,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="stock" className="block text-sm font-semibold text-gray-700">Stock</label>
+                        <label htmlFor="stock" className="block text-sm font-semibold text-gray-700">Stok</label>
                         <input
                             id="stock"
                             type="number"
@@ -85,13 +85,13 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
                             onClick={onClose}
                             className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition"
                         >
-                            Cancel
+                            Batal
                         </button>
                         <button
                             type="submit"
                             className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
-                            Add Product
+                            Tambah Produk
                         </button>
                     </div>
                 </form>
