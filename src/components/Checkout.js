@@ -1,14 +1,17 @@
-"use client"
-import React from 'react';
+import { formatToRupiah } from "@/utils/format";
 
-const Checkout = ({ totalAmount }) => {
+const Checkout = ({ subtotal, openPaymentModal }) => {
     return (
-        <div className="border p-4 rounded-lg shadow-lg">
-        <h3 className="text-xl font-semibold">Checkout</h3>
-        <p className="text-lg mt-2">Total: ${totalAmount}</p>
-        <button className="mt-4 bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">
-            Complete Purchase
-        </button>
+        <div className="mt-6 p-4 border-t bg-white rounded-lg">
+            <div className="space-y-2">
+                <div className="flex justify-between font-bold text-lg">
+                    <span>Total</span>
+                    <span>{formatToRupiah(subtotal)}</span>
+                </div>
+            </div>
+            <button onClick={openPaymentModal} className="w-full bg-orange-500 text-white py-2 mt-4 rounded-lg">
+                Continue to Payment
+            </button>
         </div>
     );
 };

@@ -81,8 +81,10 @@ export default function ProductsPage() {
     return (
         <div className="flex">
             <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-            <div className="flex flex-col flex-1 md:ml-64 mt-16">
+            
+            <div className="flex flex-col flex-1 mt-16">
                 <Navbar toggleSidebar={toggleSidebar} />
+
                 <main className="p-4 sm:px-6 min-h-screen">
                     <Header
                         search={search}
@@ -107,16 +109,8 @@ export default function ProductsPage() {
             {isSidebarOpen && (
                 <div
                     onClick={closeSidebar}
-                    className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
+                    className="fixed inset-0 bg-black bg-opacity-50 z-10"
                 ></div>
-            )}
-
-            {isModalOpen && selectedProduct && (
-                <EditProductModal
-                    product={selectedProduct}
-                    onClose={handleCloseModal}
-                    onUpdate={fetchData}
-                />
             )}
         </div>
     );

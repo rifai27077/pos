@@ -6,10 +6,10 @@ import { FaBars } from "react-icons/fa";
 
 const Navbar = ({ toggleSidebar }) => {
     return (
-        <nav className="fixed top-0 left-0 w-full h-16 bg-white shadow-md flex justify-between items-center px-4 md:px-6">
+        <nav className="fixed top-0 left-0 w-full h-16 bg-white shadow-md flex justify-between items-center px-4 md:px-6 z-40">
             <button
                 onClick={toggleSidebar}
-                className="flex items-center justify-center w-10 h-10 text-gray-800 rounded-full md:hidden hover:bg-gray-200 transition duration-300"
+                className="flex items-center justify-center w-10 h-10 text-gray-800 rounded-full hover:bg-gray-200 transition duration-300"
             >
                 <FaBars className="text-xl" />
             </button>

@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 import React, { useState } from "react";
@@ -18,10 +17,11 @@ export default function Home() {
     return (
         <div className="flex">
             <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-            <div className="flex flex-col flex-1 md:ml-64 mt-16"> {/* Tambahkan mt-16 untuk memberi ruang untuk navbar fixed */}
+            
+            <div className="flex flex-col flex-1 mt-16">
                 <Navbar toggleSidebar={toggleSidebar} />
 
-                <main className="p-4">
+                <main className="p-4 sm:px-6 min-h-screen">
                     <div className="p-6 space-y-6">
                         <h1 className="text-2xl font-bold text-gray-800 text-center">Dashboard</h1>
                         <DashboardCards />
@@ -37,7 +37,7 @@ export default function Home() {
             {isSidebarOpen && (
                 <div
                     onClick={closeSidebar}
-                    className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
+                    className="fixed inset-0 bg-black bg-opacity-50 z-10"
                 ></div>
             )}
         </div>

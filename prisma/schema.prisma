@@ -8,8 +8,9 @@ generator client {
 }
 
 model Product {
-  id    Int    @id @default(autoincrement()) // ID produk yang akan di-generate otomatis
-  name  String // Nama produk
-  price Int    // Harga produk
-  stock Int    // Stok produk
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  price Int
+  stock Int
+  img Bytes?
 }

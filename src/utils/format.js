@@ -1,3 +1,4 @@
+// src/utils/format.js
 export const formatToRupiah = (number) => {
     return new Intl.NumberFormat("id-ID", {
         style: "currency",

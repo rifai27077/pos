@@ -1,24 +1,54 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
-import { toast } from "react-toastify"; // Import toast untuk notifikasi
-import "react-toastify/dist/ReactToastify.css"; // Import CSS untuk Toastify
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [stock, setStock] = useState("");
+    const [img, setImg] = useState(null);
 
-    // Fungsi untuk mengirim produk baru dan menutup modal
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImg(reader.result.split(",")[1]);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
+        const trimmedName = name.trim();
+        if (!trimmedName) {
+            toast.error("Nama produk tidak boleh kosong!");
+            return;
+        }
+    
+        const existingProductResponse = await fetch(`/api/products?name=${trimmedName}`);
+        const existingProducts = await existingProductResponse.json();
+    
+        if (
+            existingProducts.some(
+                (product) => product.name.toLowerCase() === trimmedName.toLowerCase()
+            )
+        ) {
+            toast.error(`Produk "${trimmedName}" sudah ada!`);
+            return;
+        }
+    
         const newProduct = {
-            name,
-            price: parseInt(price),
-            stock: parseInt(stock),
+            name: trimmedName,
+            price: parseInt(price, 10),
+            stock: parseInt(stock, 10),
+            img,
         };
-
+    
         try {
             const response = await fetch("/api/products", {
                 method: "POST",
@@ -27,19 +57,19 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
                 },
                 body: JSON.stringify(newProduct),
             });
-
+    
             if (response.ok) {
-                onAddProduct(newProduct);
-                toast.success("Product added successfully!"); // Menampilkan notifikasi success
+                toast.success("Produk berhasil ditambahkan!");
                 onClose();
             } else {
-                toast.error("Failed to add product"); // Menampilkan notifikasi error
+                toast.error("Gagal menambahkan produk");
             }
         } catch (error) {
             console.error("Error adding product:", error);
-            toast.error("An error occurred while adding the product"); // Menampilkan notifikasi error
+            toast.error("Terjadi kesalahan saat menambahkan produk");
         }
     };
+    
 
     return isOpen ? (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-20 flex justify-center items-center">
@@ -47,7 +77,9 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Tambahkan Produk Baru</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="name" className="block text-sm font-semibold text-gray-700">Nama Produk</label>
+                        <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
+                            Nama Produk
+                        </label>
                         <input
                             id="name"
                             type="text"
@@ -58,7 +90,9 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="price" className="block text-sm font-semibold text-gray-700">Harga</label>
+                        <label htmlFor="price" className="block text-sm font-semibold text-gray-700">
+                            Harga
+                        </label>
                         <input
                             id="price"
                             type="number"
@@ -69,7 +103,9 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="stock" className="block text-sm font-semibold text-gray-700">Stok</label>
+                        <label htmlFor="stock" className="block text-sm font-semibold text-gray-700">
+                            Stok
+                        </label>
                         <input
                             id="stock"
                             type="number"
@@ -77,6 +113,18 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
                             onChange={(e) => setStock(e.target.value)}
                             className="w-full px-4 py-2 border text-black border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                             required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="img" className="block text-sm font-semibold text-gray-700">
+                            Gambar Produk
+                        </label>
+                        <input
+                            id="img"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="w-full px-4 py-2 border border-gray-300 text-black rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         />
                     </div>
                     <div className="flex justify-end space-x-4 mt-4">

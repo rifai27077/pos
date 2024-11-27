@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,19 +5,16 @@ import {
     FaTachometerAlt,
     FaBox,
     FaCashRegister,
-    FaShoppingCart,
     FaChartLine,
-    FaCreditCard,
-    FaUserFriends,
+    FaUser,
     FaCog,
-    FaBell,
     FaTimes,
 } from "react-icons/fa";
 
 const menuItems = [
     { href: "/", label: "Dashboard", icon: FaTachometerAlt },
     { href: "/products", label: "Products", icon: FaBox },
-    { href: "/sales", label: "Sales", icon: FaShoppingCart },
+    { href: "/user", label: "Data User", icon: FaUser },
     { href: "/pos", label: "Point of Sale", icon: FaCashRegister },
     { href: "/reports", label: "Reports", icon: FaChartLine },
     { href: "/settings", label: "Settings", icon: FaCog },
@@ -30,20 +25,22 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
 
     return (
         <aside
-            className={`fixed top-0 left-0 h-screen w-64 bg-gray-900 text-white transition-transform duration-300 z-20 ${
+            className={`fixed top-0 left-0 h-screen w-64 bg-gray-900 text-white transition-transform duration-300 z-50 ${
                 isOpen ? "translate-x-0" : "-translate-x-full"
-            } md:translate-x-0 md:block`}
+            }`}
         >
+            {/* Header Sidebar */}
             <div className="flex items-center justify-between h-16 border-b border-gray-700 px-4">
                 <h2 className="text-xl font-semibold">POS System</h2>
                 <button
                     onClick={closeSidebar}
-                    className="text-white md:hidden hover:text-gray-300 transition duration-300"
+                    className="text-white hover:text-gray-300 transition duration-300"
                 >
                     <FaTimes className="text-xl" />
                 </button>
             </div>
 
+            {/* Menu Sidebar */}
             <nav className="mt-6 space-y-4 px-4">
                 {menuItems.map(({ href, label, icon: Icon }) => (
                     <Link href={href} key={label} onClick={closeSidebar}>
@@ -54,18 +51,12 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                                     : "text-gray-300 hover:bg-gray-700 hover:text-white"
                             }`}
                         >
-                            <div className="group relative">
-                                <Icon className="text-lg md:text-xl" />
-                                <span className="absolute left-12 top-1/2 transform -translate-y-1/2 bg-gray-700 text-white text-xs px-2 py-1 rounded hidden md:group-hover:block">
-                                    {label}
-                                </span>
-                            </div>
-                            <span className="ml-3 text-sm md:text-base">{label}</span>
+                            <Icon className="text-lg" />
+                            <span className="ml-3 text-sm">{label}</span>
                         </div>
                     </Link>
                 ))}
             </nav>
-
         </aside>
     );
 };

@@ -6,7 +6,20 @@ const prisma = new PrismaClient();
 export async function GET() {
     try {
         const products = await prisma.product.findMany();
-        return new Response(JSON.stringify(products), {
+
+        // Convert binary image data to base64
+        const productsWithImages = products.map((product) => {
+            if (product.img) {
+                const base64Image = product.img.toString('base64');
+                return {
+                    ...product,
+                    img: `data:image/png;base64,${base64Image}`,
+                };
+            }
+            return product;
+        });
+
+        return new Response(JSON.stringify(productsWithImages), {
             status: 200,
         });
     } catch (error) {
@@ -18,16 +31,16 @@ export async function GET() {
     }
 }
 
-
 export async function POST(request) {
     try {
-        const { name, price, stock } = await request.json(); // Ambil data dari body request
+        const { name, price, stock, img } = await request.json(); // Ambil data dari body request
 
         const newProduct = await prisma.product.create({
             data: {
                 name,
                 price,
                 stock,
+                img: img ? Buffer.from(img, "base64") : null,
             },
         });
 
@@ -82,6 +95,7 @@ export async function PUT(req, { params }) {
                 name,
                 price,
                 stock,
+                img,
             },
         });
 
