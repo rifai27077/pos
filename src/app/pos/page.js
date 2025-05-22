@@ -22,7 +22,7 @@ export default function PointOfSale() {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const response = await fetch("/api/products");
+            const response = await fetch("/api/product");
             const data = await response.json();
             setProducts(data);
         };
@@ -64,7 +64,6 @@ export default function PointOfSale() {
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            {/* Sidebar */}
             <Sidebar
                 isOpen={isSidebarOpen}
                 closeSidebar={closeSidebar}
@@ -72,12 +71,10 @@ export default function PointOfSale() {
             />
 
             <div className="flex flex-col flex-1 mt-16 lg:mr-64">
-                {/* Navbar */}
                 <Navbar toggleSidebar={toggleSidebar} />
 
                 <main className="flex-1 p-6 lg:p-8">
                     <div className="flex flex-col lg:flex-row gap-6">
-                        {/* Product List Section */}
                         <div className="flex-1 lg:w-2/3 lg:mr-36">
                             <div className="mb-6">
                                 <SearchBar search={search} setSearch={setSearch} />
@@ -89,7 +86,6 @@ export default function PointOfSale() {
                             />
                         </div>
 
-                        {/* Cart Section */}
                         <div className="lg:w-1/4 w-full fixed top-16 right-0 bg-white p-4 rounded-lg shadow-md overflow-y-auto z-10 h-[calc(100vh-80px)]">
                             <h2 className="text-2xl font-bold mb-4">Keranjang</h2>
                             <div className="flex-1 max-h-[calc(100vh-80px)] overflow-y-auto mb-4">

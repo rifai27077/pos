@@ -1,15 +1,15 @@
-
-
 import React, { useState, useEffect } from "react";
+import { useTheme } from "@/app/context/theme-context";
 
 const StockAlerts = () => {
     const [products, setProducts] = useState([]);
     const [lowStockProducts, setLowStockProducts] = useState([]);
+    const [darkMode] = useTheme()
     const threshold = 10;
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('/api/products');
+            const response = await fetch('/api/product');
             console.log("Response status:", response.status);
             if (!response.ok) {
                 throw new Error(`Failed to fetch products, status: ${response.status}`);
@@ -22,7 +22,6 @@ const StockAlerts = () => {
             console.error("Error fetching products:", error);
         }
     };
-    
 
     useEffect(() => {
         fetchProducts();
@@ -34,8 +33,8 @@ const StockAlerts = () => {
     }, [products]);
 
     return (
-        <div className="bg-gray-800 shadow-md p-4 rounded-lg">
-            <h2 className="text-lg text-white font-bold mb-3">Stok Menipis</h2>
+        <div className={`shadow-md p-4 rounded-lg transition-colors duration-300 ${darkMode ? "bg-gray-800" : "bg-white"}`}>
+            <h2 className={`text-lg font-bold mb-3 ${darkMode ? "text-white" : "text-gray-800"}`}>Stok Menipis</h2>
 
             {lowStockProducts.length > 0 ? (
                 <ul>

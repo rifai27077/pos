@@ -1,6 +1,6 @@
 import React from "react";
 import ActionButtons from "@/components/ActionButtons";
-import { formatToRupiah } from "@/utils/format"; // Pastikan lokasi fungsi sesuai
+import { formatToRupiah } from "@/utils/format"
 
 const ProductRow = ({ product, onEdit, onDelete }) => {
     return (
@@ -10,8 +10,8 @@ const ProductRow = ({ product, onEdit, onDelete }) => {
             <td className="px-4 py-3 border-b text-gray-700">{product.stock || 0}</td>
             <td className="px-4 py-3 border-b text-gray-700">
                 <ActionButtons
-                    onEdit={onEdit ? () => onEdit(product.id) : null}  // Pastikan onEdit dipanggil dengan id produk
-                    onDelete={onDelete ? () => onDelete(product.id) : null}  // Pastikan onDelete dipanggil dengan id produk
+                    onEdit={onEdit ? () => onEdit(product.id) : null}
+                    onDelete={onDelete ? () => onDelete(product.id) : null}
                 />
             </td>
         </tr>

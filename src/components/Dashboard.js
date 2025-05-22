@@ -1,23 +1,33 @@
-
 "use client";
 
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from "chart.js";
+import { useTheme } from "@/app/context/theme-context";
 
 ChartJS.register(
-    CategoryScale, // for category axis
-    LinearScale,   // for linear axis (e.g., Y-axis for bar/line charts)
-    BarElement,    // for bar chart
-    Title,         // for chart title
-    Tooltip,       // for tooltips
-    Legend         // for legend
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
 );
 
 const Dashboard = () => {
+    const [darkMode] = useTheme();
+
     const stats = [
-        { title: "Total Sales", value: "Rp 25.000.000", color: "bg-green-500" },
-        { title: "Transactions", value: "150", color: "bg-blue-500" },
-        { title: "Low Stock Items", value: "8", color: "bg-red-500" },
+        { title: "Total Sales", value: "Rp 25.000.000", colorLight: "bg-green-500", colorDark: "bg-green-600" },
+        { title: "Transactions", value: "150", colorLight: "bg-blue-500", colorDark: "bg-blue-600" },
+        { title: "Low Stock Items", value: "8", colorLight: "bg-red-500", colorDark: "bg-red-600" },
     ];
 
     const chartData = {
@@ -26,34 +36,76 @@ const Dashboard = () => {
             {
                 label: "Sales (in Rp)",
                 data: [5000000, 7000000, 8000000, 6000000, 9000000],
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
-                borderColor: "rgba(75, 192, 192, 1)",
-                borderWidth: 1,
+                backgroundColor: darkMode
+                    ? "rgba(59, 130, 246, 0.7)" // biru terang untuk dark mode
+                    : "rgba(75, 192, 192, 0.6)", // hijau muda untuk light mode
+                borderColor: darkMode
+                    ? "rgba(59, 130, 246, 1)"
+                    : "rgba(75, 192, 192, 1)",
+                borderWidth: 2,
+                borderRadius: 5,
             },
         ],
     };
 
-    return (
-        <div className="p-4">
-            <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: darkMode ? '#fff' : '#000'
+                }
+            },
+            title: {
+                display: true,
+                text: 'Weekly Sales',
+                color: darkMode ? '#fff' : '#000'
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: darkMode ? '#fff' : '#000'
+                },
+                grid: {
+                    color: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+                }
+            },
+            y: {
+                ticks: {
+                    color: darkMode ? '#fff' : '#000'
+                },
+                grid: {
+                    color: darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+                }
+            }
+        }
+    };
 
-            {/* Stats Section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+    return (
+        <div className="p-6 min-h-screen transition-colors duration-300 bg-gray-100 dark:bg-gray-900">
+            <h1 className="text-4xl font-bold mb-8 text-left text-gray-800 dark:text-white">Dashboard</h1>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 {stats.map((stat) => (
                     <div
                         key={stat.title}
-                        className={`p-4 rounded-lg text-white ${stat.color}`}
+                        className={`p-6 rounded-2xl shadow-md text-white ${
+                            darkMode ? stat.colorDark : stat.colorLight
+                        }`}
                     >
-                        <h3 className="text-lg font-medium">{stat.title}</h3>
-                        <p className="text-2xl font-bold">{stat.value}</p>
+                        <h3 className="text-lg font-semibold">{stat.title}</h3>
+                        <p className="text-3xl font-bold mt-2">{stat.value}</p>
                     </div>
                 ))}
             </div>
 
-            {/* Chart Section */}
-            <div className="bg-white shadow-md rounded-lg p-4">
-                <h2 className="text-xl font-medium mb-4">Sales Overview</h2>
-                <Bar data={chartData} />
+            {/* Chart */}
+            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 transition-colors duration-300">
+                <h2 className="text-2xl font-semibold mb-4 text-gray-700 dark:text-white">Sales Overview</h2>
+                <Bar data={chartData} options={chartOptions}/>
             </div>
         </div>
     );

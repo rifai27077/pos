@@ -1,7 +1,7 @@
 import React from "react";
 
 const getVisiblePages = (totalPages, currentPage) => {
-    const delta = 1; // Halaman di sekitar halaman aktif
+    const delta = 1;
     const range = [];
     const start = Math.max(1, currentPage - delta);
     const end = Math.min(totalPages, currentPage + delta);

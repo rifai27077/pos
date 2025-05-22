@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import ProductRow from "@/components/ProductRow";
 import Select from "react-select";
 import Pagination from "@/components/Pagination";
+import { useTheme } from "@/app/context/theme-context"; // Contoh import theme context
 
 const ProductTable = ({ products, onEdit, onDelete, search }) => {
+    const [darkMode] = useTheme(); // ambil darkMode dari context
     const [sortColumn, setSortColumn] = useState("id");
     const [sortOrder, setSortOrder] = useState("asc");
-    const [currentPage, setCurrentPage] = useState(1); // Tambahkan state untuk halaman
-    const itemsPerPage = 7; // Tentukan jumlah item per halaman
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 7;
 
     const handleSort = (selectedOption) => {
         const [column, order] = selectedOption.value.split("-");
@@ -16,16 +18,14 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
     };
 
     const filteredProducts = Array.isArray(products) && products.length > 0 
-    ? products.filter((product) => {
-        const productName = product.name ? product.name.toLowerCase() : "";
-        const searchQuery = search ? search.toLowerCase() : "";
-        return productName.includes(searchQuery);
-    })
-    : [];
+        ? products.filter((product) => {
+            const productName = product.name ? product.name.toLowerCase() : "";
+            const searchQuery = search ? search.toLowerCase() : "";
+            return productName.includes(searchQuery);
+        })
+        : [];
 
-    useEffect(() => {
-        setCurrentPage(1); // Reset ke halaman pertama jika search atau sort berubah
-    }, [search, sortColumn, sortOrder]);
+    useEffect(() => {}, [search, sortColumn, sortOrder]);
 
     const sortedProducts = filteredProducts.sort((a, b) => {
         if (sortColumn === "stock") {
@@ -40,15 +40,15 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
         return sortOrder === "asc" ? a.id - b.id : b.id - a.id;
     });
 
-    const totalPages = Math.ceil(sortedProducts.length / itemsPerPage); // Total halaman
+    const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
     const paginatedProducts = sortedProducts.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
-    ); // Data untuk halaman saat ini
+    );
 
     const handlePageChange = (page) => {
-        if (page === "...") return; // Jangan perbarui halaman jika '...'
-        setCurrentPage(page); // Update currentPage hanya jika bukan '...'
+        if (page === "...") return;
+        setCurrentPage(page);
     };
     
     const sortOptions = [
@@ -62,31 +62,40 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
         { value: "stock-desc", label: "Stok (Banyak ke Sedikit)" },
     ];    
 
+    // Custom styles react-select dengan dark mode support
     const customStyles = {
         control: (base) => ({
             ...base,
-            backgroundColor: "#FFFFFF",
-            borderColor: "#E2E8F0",
+            backgroundColor: darkMode ? "#1A202C" : "#FFFFFF", // gray.900 atau putih
+            borderColor: darkMode ? "#4A5568" : "#E2E8F0", // gray.600 atau gray.200
             borderRadius: "8px",
             padding: ".2rem",
             boxShadow: "none",
+            color: darkMode ? "#E2E8F0" : "#2D3748",
         }),
         menu: (base) => ({
             ...base,
-            backgroundColor: "#FFFFFF",
-            borderColor: "#E2E8F0",
+            backgroundColor: darkMode ? "#2D3748" : "#FFFFFF", // gray.700 atau putih
+            borderColor: darkMode ? "#4A5568" : "#E2E8F0",
             borderRadius: "8px",
+            color: darkMode ? "#E2E8F0" : "#2D3748",
         }),
         option: (provided, state) => ({
             ...provided,
-            backgroundColor: state.isSelected ? "#2D3748" : state.isFocused ? "#EDF2F7" : "white",
-            color: state.isSelected ? "white" : "#2D3748",
+            backgroundColor: state.isSelected
+                ? (darkMode ? "#4A5568" : "#2D3748") // dark gray / darkMode vs dark blue / lightMode
+                : state.isFocused
+                ? (darkMode ? "#2A4365" : "#EDF2F7") // darker blue / light gray
+                : darkMode
+                ? "#1A202C"
+                : "white",
+            color: state.isSelected ? "white" : darkMode ? "#E2E8F0" : "#2D3748",
             padding: "10px",
             cursor: "pointer",
         }),
         singleValue: (provided) => ({
             ...provided,
-            color: "#2D3748",
+            color: darkMode ? "#E2E8F0" : "#2D3748",
         }),
     };
 
@@ -100,12 +109,28 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
                     className="w-56 sm:w-72"
                     classNamePrefix="custom-select"
                     placeholder="Urutkan berdasarkan..."
+                    theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                            ...theme.colors,
+                            primary25: darkMode ? "#2A4365" : "#EDF2F7",  // hover option background
+                            primary: darkMode ? "#4A5568" : "#2D3748",    // selected option bg
+                            neutral0: darkMode ? "#1A202C" : "#fff",      // background
+                            neutral80: darkMode ? "#E2E8F0" : "#2D3748", // text
+                        },
+                    })}
                 />
             </div>
-    
-            <div className="overflow-x-auto shadow-lg rounded-lg">
-                <table className="min-w-full bg-white border border-gray-300 rounded-lg">
-                    <thead className="bg-gray-800 text-white">
+
+            <div
+                className={`overflow-x-auto shadow-lg rounded-lg
+                ${darkMode ? "bg-gray-800 border border-gray-700" : "bg-white border border-gray-300"}
+                `}
+            >
+                <table className={`min-w-full rounded-lg
+                    ${darkMode ? "text-gray-200" : "text-gray-900"}
+                `}>
+                    <thead className={darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-800 text-white"}>
                         <tr>
                             <th className="px-4 py-3 text-left font-semibold text-sm sm:text-base">
                                 Nama Produk
@@ -129,11 +154,12 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
                                     product={product}
                                     onEdit={onEdit}
                                     onDelete={onDelete}
+                                    darkMode={darkMode} // pass down kalau perlu
                                 />
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="4" className="px-4 py-3 text-center text-gray-500">
+                                <td colSpan="4" className={`px-4 py-3 text-center ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
                                     Tidak ada produk yang ditemukan
                                 </td>
                             </tr>
@@ -146,6 +172,7 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
                                     totalPages={totalPages}
                                     currentPage={currentPage}
                                     onPageChange={handlePageChange}
+                                    darkMode={darkMode} // pass down kalau komponen Pagination perlu styling dark
                                 />
                             </td>
                         </tr>
@@ -153,7 +180,7 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
                 </table>
             </div>
         </div>
-    );    
+    );
 };
 
 export default ProductTable;

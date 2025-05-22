@@ -14,7 +14,7 @@ const EditProductPage = () => {
         if (id) {
             const fetchProduct = async () => {
                 try {
-                    const response = await fetch(`/api/products/${id}`);
+                    const response = await fetch(`/api/product/${id}`);
             
                     if (!response.ok) {
                         throw new Error(`Failed to fetch product, status: ${response.status}`);
@@ -46,7 +46,7 @@ const EditProductPage = () => {
         };
     
         try {
-            const response = await fetch(`/api/products/${id}`, {
+            const response = await fetch(`/api/product/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const EditProductPage = () => {
             }
     
             // Jika berhasil, arahkan pengguna ke halaman produk
-            window.location.href = "/products";  // Atau menggunakan router.push untuk navigasi tanpa reload
+            window.location.href = "/product";  // Atau menggunakan router.push untuk navigasi tanpa reload
         } catch (error) {
             console.error("Error during product update:", error.message);
         }

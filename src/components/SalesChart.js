@@ -1,26 +1,35 @@
 import React, { useState } from "react";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title } from "chart.js";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+} from "chart.js";
+import { useTheme } from "@/app/context/theme-context";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title);
 
 const SalesChart = () => {
-    // State untuk filter waktu dan produk
-    const [timeRange, setTimeRange] = useState("monthly"); // Default ke bulanan
+    const [timeRange, setTimeRange] = useState("monthly");
     const [selectedProduct, setSelectedProduct] = useState("Produk A");
+    const [darkMode] = useTheme();
 
-    // Fungsi untuk mengubah filter waktu
     const handleTimeRangeChange = (e) => setTimeRange(e.target.value);
-
-    // Fungsi untuk mengubah filter produk
     const handleProductChange = (e) => setSelectedProduct(e.target.value);
 
-    // Data grafik berdasarkan waktu yang dipilih
     const data = {
-        labels: timeRange === "monthly" ? ["Jan", "Feb", "Mar", "Apr", "May", "Jun"] : timeRange === "weekly" ? ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab"] : ["2024-11-01", "2024-11-02", "2024-11-03", "2024-11-04", "2024-11-05", "2024-11-06"],
+        labels:
+        timeRange === "monthly"
+            ? ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+            : timeRange === "weekly"
+            ? ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab"]
+            : ["2024-11-01", "2024-11-02", "2024-11-03", "2024-11-04", "2024-11-05", "2024-11-06"],
         datasets: [
         {
-            label: selectedProduct, // Label produk yang dipilih
+            label: selectedProduct,
             data:
             selectedProduct === "Produk A"
                 ? timeRange === "monthly"
@@ -39,45 +48,59 @@ const SalesChart = () => {
                 : timeRange === "weekly"
                 ? [110, 130, 280, 210, 230, 400]
                 : [55, 75, 95, 115, 135, 160],
-            borderColor: "rgb(59, 130, 246)", // Warna hijau lembut
-            backgroundColor: "rgba(75, 192, 192, 0.2)", // Warna latar belakang grafik
+            borderColor: "rgb(59, 130, 246)",
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
             tension: 0.3,
-            pointRadius: 5, // Ukuran titik pada grafik
-            pointBackgroundColor: "rgba(59, 130, 246, 0.2)", // Warna titik
-            fll: true,
+            pointRadius: 5,
+            pointBackgroundColor: "rgba(59, 130, 246, 0.2)",
+            fill: true,
         },
         ],
     };
 
     return (
-        
-        <div className="bg-gray-800 shadow-lg p-6 rounded-xl">
-            <h2 className="text-2xl font-bold text-white mb-5">Grafik Penjualan</h2>
+        <div
+        className={`shadow-lg p-6 rounded-xl transition-colors duration-300 ${
+            darkMode ? "bg-gray-800" : "bg-white"
+        }`}
+        >
+        <h2
+            className={`text-2xl font-bold mb-5 ${
+            darkMode ? "text-white" : "text-gray-800"
+            }`}
+        >
+            Grafik Penjualan
+        </h2>
 
-            {/* Dropdown untuk filter waktu */}
-            <select
-                onChange={handleTimeRangeChange}
-                value={timeRange}
-                className="bg-gray-700 mb-4 p-3 mx-2 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[rgba(59, 130, 246, 0.2)]"
-            >
-                <option value="daily">Harian</option>
-                <option value="weekly">Mingguan</option>
-                <option value="monthly">Bulanan</option>
-            </select>
+        <select
+            onChange={handleTimeRangeChange}
+            value={timeRange}
+            className={`mb-4 p-3 mx-2 border rounded-lg focus:outline-none focus:ring-2 ${
+            darkMode
+                ? "bg-gray-700 border-gray-600 text-white focus:ring-blue-300"
+                : "bg-white border-gray-300 text-gray-800 focus:ring-blue-200"
+            }`}
+        >
+            <option value="daily">Harian</option>
+            <option value="weekly">Mingguan</option>
+            <option value="monthly">Bulanan</option>
+        </select>
 
-            {/* Dropdown untuk filter produk */}
-            <select
-                onChange={handleProductChange}
-                value={selectedProduct}
-                className="bg-gray-700 mb-4 p-3 mx-2 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[rgba(59, 130, 246, 0.2)]"
-            >
-                <option value="Produk A">Produk A</option>
-                <option value="Produk B">Produk B</option>
-                <option value="Produk C">Produk C</option>
-            </select>
+        <select
+            onChange={handleProductChange}
+            value={selectedProduct}
+            className={`mb-4 p-3 mx-2 border rounded-lg focus:outline-none focus:ring-2 ${
+            darkMode
+                ? "bg-gray-700 border-gray-600 text-white focus:ring-blue-300"
+                : "bg-white border-gray-300 text-gray-800 focus:ring-blue-200"
+            }`}
+        >
+            <option value="Produk A">Produk A</option>
+            <option value="Produk B">Produk B</option>
+            <option value="Produk C">Produk C</option>
+        </select>
 
-            {/* Grafik */}
-            <Line data={data} />
+        <Line data={data} />
         </div>
     );
 };

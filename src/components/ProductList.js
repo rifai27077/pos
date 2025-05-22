@@ -12,11 +12,12 @@ const ProductList = ({ products, addToCart }) => {
                 >
                     <div className="relative h-45 w-full min-h-[192px] mb-4">
                         <Image
-                            src={product.img || "/ai.png"}
+                            src={product.img ? `data:image/jpeg;base64,${product.img}` : "/ai.png"}
                             alt={product.name}
                             className="object-cover rounded-lg"
                             layout="fill"
                         />
+
                     </div>
 
                     <h2 className="text-lg text-center font-semibold text-gray-900 mb-1 truncate">

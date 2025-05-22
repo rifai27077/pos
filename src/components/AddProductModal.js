@@ -30,7 +30,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
             return;
         }
     
-        const existingProductResponse = await fetch(`/api/products?name=${trimmedName}`);
+        const existingProductResponse = await fetch(`/api/product?name=${trimmedName}`);
         const existingProducts = await existingProductResponse.json();
     
         if (
@@ -50,7 +50,7 @@ const AddProductModal = ({ isOpen, onClose, onAddProduct }) => {
         };
     
         try {
-            const response = await fetch("/api/products", {
+            const response = await fetch("/api/product", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

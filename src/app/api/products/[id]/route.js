@@ -1,4 +1,4 @@
-// src/app/api/products/[id]/route.js
+// src/app/api/product/[id]/route.js
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();

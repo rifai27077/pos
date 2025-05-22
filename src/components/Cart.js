@@ -8,21 +8,18 @@ const Cart = ({ cart, removeFromCart, updateQuantity }) => {
             <ul className="space-y-4">
                 {cart.map((item) => (
                     <li key={item.id} className="flex items-center justify-between space-x-4 border-b pb-4">
-                        {/* Product Image */}
                         <Image
-                            src={item.img ? `data:image/jpeg;base64,${item.img}` : "/ai.png"} // Menangani img dalam format base64
+                            src={item.img ? `data:image/jpeg;base64,${item.img}` : "/ai.png"}
                             alt={item.name}
                             className="w-16 h-16 object-cover rounded-lg"
                             width={64}
                             height={64}
                         />
-                        {/* Product Details */}
                         <div className="flex-1 ml-4">
                             <h3 className="text-sm font-semibold">{item.name}</h3>
                             <p className="text-gray-500 text-sm">{formatToRupiah(item.price)}</p>
                         </div>
 
-                        {/* Quantity Controls */}
                         <div className="flex items-center space-x-2">
                             <button
                                 onClick={() =>
@@ -44,7 +41,6 @@ const Cart = ({ cart, removeFromCart, updateQuantity }) => {
                             </button>
                         </div>
 
-                        {/* Remove Button */}
                         <button
                             onClick={() => removeFromCart(item.id)}
                             className="text-red-500 text-xl"
@@ -55,7 +51,6 @@ const Cart = ({ cart, removeFromCart, updateQuantity }) => {
                 ))}
             </ul>
 
-            {/* Total Price Section (Optional) */}
             {cart.length > 0 && (
                 <div className="mt-6 border-t pt-4">
                     <div className="flex justify-between text-lg font-semibold">
