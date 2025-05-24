@@ -9,7 +9,7 @@ const StockAlerts = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('/api/product');
+            const response = await fetch('/api/produk');
             console.log("Response status:", response.status);
             if (!response.ok) {
                 throw new Error(`Failed to fetch products, status: ${response.status}`);

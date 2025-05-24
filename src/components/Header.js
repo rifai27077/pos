@@ -38,7 +38,7 @@ const Header = ({ search, setSearch, onAddProduct, darkMode }) => {
                 <SearchBar search={search} setSearch={setSearch} />
                 <button
                     className={`px-4 py-2 rounded-lg font-semibold transition
-                        ${darkMode ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-blue-500 hover:bg-blue-600 text-white"}`}
+                        ${darkMode ? "bg-blue-100 hover:bg-blue-700 text-white" : "bg-blue-500 hover:bg-blue-600 text-white"}`}
                     onClick={openModal}
                 >
                     Tambah Produk

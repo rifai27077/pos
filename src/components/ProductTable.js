@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import ProductRow from "@/components/ProductRow";
 import Select from "react-select";
-import Pagination from "@/components/Pagination";
-import { useTheme } from "@/app/context/theme-context"; // Contoh import theme context
+import Pagination from "./Pagination";
+import { useTheme } from "@/app/context/theme-context";
+import ActionButtons from "@/components/ActionButtons";
+import { formatToRupiah } from "@/utils/format";
 
 const ProductTable = ({ products, onEdit, onDelete, search }) => {
-    const [darkMode] = useTheme(); // ambil darkMode dari context
+    const [darkMode] = useTheme();
     const [sortColumn, setSortColumn] = useState("id");
     const [sortOrder, setSortOrder] = useState("asc");
     const [currentPage, setCurrentPage] = useState(1);
@@ -66,8 +67,8 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
     const customStyles = {
         control: (base) => ({
             ...base,
-            backgroundColor: darkMode ? "#1A202C" : "#FFFFFF", // gray.900 atau putih
-            borderColor: darkMode ? "#4A5568" : "#E2E8F0", // gray.600 atau gray.200
+            backgroundColor: darkMode ? "#1A202C" : "#FFFFFF",
+            borderColor: darkMode ? "#4A5568" : "#E2E8F0",
             borderRadius: "8px",
             padding: ".2rem",
             boxShadow: "none",
@@ -75,7 +76,7 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
         }),
         menu: (base) => ({
             ...base,
-            backgroundColor: darkMode ? "#2D3748" : "#FFFFFF", // gray.700 atau putih
+            backgroundColor: darkMode ? "#2D3748" : "#FFFFFF",
             borderColor: darkMode ? "#4A5568" : "#E2E8F0",
             borderRadius: "8px",
             color: darkMode ? "#E2E8F0" : "#2D3748",
@@ -83,9 +84,9 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
         option: (provided, state) => ({
             ...provided,
             backgroundColor: state.isSelected
-                ? (darkMode ? "#4A5568" : "#2D3748") // dark gray / darkMode vs dark blue / lightMode
+                ? (darkMode ? "#4A5568" : "#2D3748")
                 : state.isFocused
-                ? (darkMode ? "#2A4365" : "#EDF2F7") // darker blue / light gray
+                ? (darkMode ? "#2A4365" : "#EDF2F7")
                 : darkMode
                 ? "#1A202C"
                 : "white",
@@ -99,8 +100,30 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
         }),
     };
 
+    const ProductRow = ({ product }) => {
+        return (
+            <tr className="odd:bg-gray-100 even:bg-gray-200 hover:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700 dark:hover:bg-gray-600 transition duration-200">
+                <td className="px-4 py-3 border-b border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white">
+                    {product.name}
+                </td>
+                <td className="px-4 py-3 border-b border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white">
+                    {formatToRupiah(product.price || 0)}
+                </td>
+                <td className="px-4 py-3 border-b border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white">
+                    {product.stock || 0}
+                </td>
+                <td className="pl-4 py-3 border-b border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white">
+                    <ActionButtons
+                        onEdit={onEdit ? () => onEdit(product.id) : null}
+                        onDelete={onDelete ? () => onDelete(product.id) : null}
+                    />
+                </td>
+            </tr>
+        );
+    };
+
     return (
-        <div className="space-y-4">
+        <div className={`space-y-4 transition-colors duration-300 ${darkMode ? "bg-gray-900" : "bg-gray-100"}`}>
             <div className="flex justify-end mb-4">
                 <Select
                     options={sortOptions}
@@ -113,10 +136,10 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
                         ...theme,
                         colors: {
                             ...theme.colors,
-                            primary25: darkMode ? "#2A4365" : "#EDF2F7",  // hover option background
-                            primary: darkMode ? "#4A5568" : "#2D3748",    // selected option bg
-                            neutral0: darkMode ? "#1A202C" : "#fff",      // background
-                            neutral80: darkMode ? "#E2E8F0" : "#2D3748", // text
+                            primary25: darkMode ? "#2A4365" : "#EDF2F7",
+                            primary: darkMode ? "#4A5568" : "#2D3748",
+                            neutral0: darkMode ? "#1A202C" : "#fff",
+                            neutral80: darkMode ? "#E2E8F0" : "#2D3748",
                         },
                     })}
                 />
@@ -124,24 +147,24 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
 
             <div
                 className={`overflow-x-auto shadow-lg rounded-lg
-                ${darkMode ? "bg-gray-800 border border-gray-700" : "bg-white border border-gray-300"}
+                    ${darkMode ? "bg-gray-800 border border-gray-700" : "bg-white border border-gray-300"}
                 `}
             >
-                <table className={`min-w-full rounded-lg
+                <table className={`min-w-full rounded-lg transition-colors duration-300
                     ${darkMode ? "text-gray-200" : "text-gray-900"}
                 `}>
-                    <thead className={darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-800 text-white"}>
+                    <thead className={`${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-800 text-white"}`}>
                         <tr>
-                            <th className="px-4 py-3 text-left font-semibold text-sm sm:text-base">
+                            <th className="px-4 py-3 border-b text-left font-semibold text-sm sm:text-base">
                                 Nama Produk
                             </th>
-                            <th className="px-4 py-3 text-left font-semibold text-sm sm:text-base">
+                            <th className="px-4 py-3 border-b text-left font-semibold text-sm sm:text-base">
                                 Harga
                             </th>
-                            <th className="px-4 py-3 text-left font-semibold text-sm sm:text-base">
+                            <th className="px-4 py-3 border-b text-left font-semibold text-sm sm:text-base">
                                 Stok
                             </th>
-                            <th className="px-4 py-3 text-left font-semibold text-sm sm:text-base">
+                            <th className="px-4 py-3 border-b text-left font-semibold text-sm sm:text-base">
                                 Aksi
                             </th>
                         </tr>
@@ -152,9 +175,6 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
                                 <ProductRow
                                     key={product.id}
                                     product={product}
-                                    onEdit={onEdit}
-                                    onDelete={onDelete}
-                                    darkMode={darkMode} // pass down kalau perlu
                                 />
                             ))
                         ) : (
@@ -165,14 +185,14 @@ const ProductTable = ({ products, onEdit, onDelete, search }) => {
                             </tr>
                         )}
                     </tbody>
-                    <tfoot>
+                    <tfoot className={darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"}>
                         <tr>
                             <td colSpan="4" className="px-4 py-3 text-right">
                                 <Pagination
                                     totalPages={totalPages}
                                     currentPage={currentPage}
                                     onPageChange={handlePageChange}
-                                    darkMode={darkMode} // pass down kalau komponen Pagination perlu styling dark
+                                    darkMode={darkMode}
                                 />
                             </td>
                         </tr>

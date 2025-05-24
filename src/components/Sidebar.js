@@ -13,10 +13,10 @@ import {
 import { useTheme } from "@/app/context/theme-context"; // import useTheme
 
 const menuItems = [
-    { href: "/", label: "Dashboard", icon: FaTachometerAlt },
-    { href: "/product", label: "Product", icon: FaBox },
+    { href: "/", label: "Dasbor", icon: FaTachometerAlt },
+    { href: "/produk", label: "Produk", icon: FaBox },
     { href: "/user", label: "Data User", icon: FaUser },
-    { href: "/pos", label: "Point of Sale", icon: FaCashRegister },
+    { href: "/kasir", label: "Kasir", icon: FaCashRegister },
     { href: "/reports", label: "Reports", icon: FaChartLine },
     { href: "/settings", label: "Settings", icon: FaCog },
 ];

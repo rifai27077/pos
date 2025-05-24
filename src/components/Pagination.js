@@ -27,7 +27,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
             {currentPage > 1 && (
                 <button
                     onClick={() => onPageChange(currentPage - 1)}
-                    className="inline-flex items-center justify-center rounded border border-gray-300 bg-white text-gray-900"
+                    className="p-1 inline-flex items-center justify-center rounded border border-gray-300 bg-white text-gray-900 dark:bg-gray-800 dark:text-white dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                     <span className="sr-only">Previous Page</span>
                     &lt;
@@ -37,11 +37,11 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
                 <button
                     key={index}
                     onClick={() => page !== "..." && onPageChange(page)}
-                    className={`block size-8 rounded border ${
+                    className={`block size-8 rounded border text-center leading-8 ${
                         currentPage === page
-                            ? "border-blue-600 bg-blue-600 text-white"
-                            : "border-gray-300 bg-white text-gray-900"
-                    } text-center leading-8`}
+                            ? "border-blue-600 bg-blue-600 text-white dark:border-blue-500 dark:bg-blue-500"
+                            : "border-gray-300 bg-white text-gray-900 dark:bg-gray-800 dark:text-white dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`}
                 >
                     {page}
                 </button>
@@ -49,7 +49,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
             {currentPage < totalPages && (
                 <button
                     onClick={() => onPageChange(currentPage + 1)}
-                    className="inline-flex items-center justify-center rounded border border-gray-300 bg-white text-gray-900"
+                    className="p-1 inline-flex items-center justify-center rounded border border-gray-300 bg-white text-gray-900 dark:bg-gray-800 dark:text-white dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                     <span className="sr-only">Next Page</span>
                     &gt;
@@ -58,5 +58,6 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
         </div>
     );
 };
+
 
 export default Pagination;
